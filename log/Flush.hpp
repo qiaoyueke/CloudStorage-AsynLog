@@ -152,7 +152,6 @@ namespace mylog
         size_t cur_size_ = 0;
         size_t max_size_;
         std::string basename_;
-        // std::ofstream ofs_;
         FILE *fs_ = NULL;
     };
 

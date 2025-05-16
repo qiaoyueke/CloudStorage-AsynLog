@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstdarg>
 #include <mutex>
+
 #include "AsynscWorker.hpp"
 #include "LogLevel.hpp"
 #include "Message.hpp"
@@ -20,6 +21,7 @@ namespace mylog
               worker_(std::make_shared<AsynscWorker>(type_,
                                                      std::bind(&Logger::RealFlush, this, std::placeholders::_1)))
         {
+            std::cout << "Logger construct start" << std::endl;
         }
 
         // 返回日志器的名字
@@ -42,6 +44,7 @@ namespace mylog
 
         void Info(const std::string &filename, size_t line, const std::string &format, ...)
         {
+            std::cout << "Info start" << std::endl;
             va_list va;
             va_start(va, format);
             char *ret;
@@ -102,6 +105,8 @@ namespace mylog
         // 根据日志等级，调用 AsynscWorker将日志内容写在生产者缓冲区
         void PushLog(const LogLevel::value level, const std::string &file, size_t line, char *ret)
         {
+            std::cout << "PushLog start" << std::endl;
+
             Message msg(level, file, line, logger_name_, ret);
 
             // ERRER和FATAL有向远端存储的部分
@@ -111,6 +116,7 @@ namespace mylog
             }
 
             std::string temp = msg.format();
+            std::cout <<temp<< std::endl;
             worker_->Push(temp.c_str(), temp.size());
         }
 
@@ -154,6 +160,7 @@ namespace mylog
 
         Logger::ptr Build()
         {
+            std::cout << "Build start" << std::endl;
             return std::make_shared<Logger>(logger_name_, flushs_, async_type);
         }
 

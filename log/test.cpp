@@ -2,12 +2,15 @@
 #include "Manager.hpp"
 #include "MyLog.hpp"
 
-mylog::Util::JsonData* g_conf_data;
+mylog::Util::JsonData *g_conf_data;
 
-void test() {
+void test()
+{
+    std::cout << "test start" << std::endl;
     int cur_size = 0;
     int cnt = 1;
-    while (cur_size++ < 2) {
+    while (cur_size++ < 2)
+    {
         mylog::GetLogger("asynclogger")->Info("测试日志-%d", cnt++);
         mylog::GetLogger("asynclogger")->Warn("测试日志-%d", cnt++);
         mylog::GetLogger("asynclogger")->Debug("测试日志-%d", cnt++);
@@ -16,13 +19,14 @@ void test() {
     }
 }
 
-
-int main() {
+int main()
+{
     g_conf_data = mylog::Util::JsonData::GetJsonData();
-    mylog::LoggerBuilder* LGB = new mylog::LoggerBuilder();
+    mylog::LoggerBuilder *LGB = new mylog::LoggerBuilder();
     LGB->SetLoggerName("asynclogger");
-    LGB->AddFlush<mylog::FileFlush>("log.conf");
-    LGB->AddFlush<mylog::RollFileFlush>("log1.conf", 1024*1024);
+    LGB->AddFlush<mylog::FileFlush>("./log.log");
+    LGB->AddFlush<mylog::RollFileFlush>("./log", 1024 * 1024);
+    mylog::LoggerManager::GetInstance().AddLogger(LGB->Build());
     test();
     return 0;
 }

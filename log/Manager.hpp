@@ -29,10 +29,13 @@ namespace mylog
         // 添加一个日志器
         void AddLogger(const Logger::ptr &&newlogger)
         {
-            std::unique_lock<std::mutex> lock(mutex_);
+            std::cout<<"AddLogger start"<<std::endl;
             if (Exist(newlogger->LoggerName()))
                 return;
+            std::unique_lock<std::mutex> lock(mutex_);
+            std::cout<<"AddLogger success 1"<<std::endl;
             map_.insert(std::make_pair(newlogger->LoggerName(), newlogger));
+            std::cout<<"AddLogger success"<<std::endl;
         }
 
         // 获取一个Logger
@@ -57,9 +60,11 @@ namespace mylog
         // 构造函数生成一个默认的Logger
         LoggerManager()
         {
+            std::cout<<"Manager consturct"<<std::endl;
             std::unique_ptr<LoggerBuilder> build(new LoggerBuilder());
             build->SetLoggerName("default");
             default_logger_ = build->Build();
+            std::cout<<"default construct success"<<std::endl;
             map_.insert(std::make_pair("default", default_logger_));
         }
 

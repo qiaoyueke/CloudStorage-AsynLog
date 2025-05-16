@@ -14,8 +14,8 @@ namespace mylog{
         Message() = default;
         
         Message(LogLevel::value level, const std::string &name, size_t line, const std::string & loggername, char* ret)
-        :level_(LogLevel::level_to_string(level)), file_name_(name), line_(line), logger_name_(loggername), data_(ret),
-        tid_(std::this_thread::get_id())
+        :level_(LogLevel::level_to_string(level)), file_name_(name), line_(line), logger_name_(loggername), data_(ret), 
+        time_(time(nullptr)), tid_(std::this_thread::get_id())
         {}
 
         std::string format() const {

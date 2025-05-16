@@ -14,24 +14,27 @@ namespace mylog
         {
         }
 
-        bool Empty() const {
+        bool Empty() const
+        {
             return write_pos_ == 0;
         }
 
-        void Swap(AsynscBuffer& other){
+        void Swap(AsynscBuffer &other)
+        {
             buffer_.swap(other.buffer_);
             std::swap(write_pos_, other.write_pos_);
             std::swap(read_pos_, other.read_pos_);
-
         }
 
-        void Reset(){
+        void Reset()
+        {
             write_pos_ = 0;
             read_pos_ = 0;
         }
 
-        const char* Begin() const{
-            return &buffer_[read_pos_]; 
+        const char *Begin() const
+        {
+            return &buffer_[read_pos_];
         }
 
         size_t WriteableSize() const
@@ -47,6 +50,7 @@ namespace mylog
         void Push(const char *data, size_t len)
         {
             BeEnough(len);
+            std::cout << "写入buffer" << std::endl;
             std::copy(data, data + len, &buffer_[write_pos_]);
             write_pos_ += len;
         }
@@ -58,7 +62,9 @@ namespace mylog
             if (buffer_.size() < g_conf_data->threshould_)
             {
                 buffer_.reserve(2 * buffer_.size() + len);
-            }else{
+            }
+            else
+            {
                 buffer_.reserve(buffer_.size() + len + g_conf_data->line_growth_);
             }
         }
