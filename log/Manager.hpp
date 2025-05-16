@@ -4,7 +4,7 @@
 #include <mutex>
 #include "Logger.hpp"
 
-namespace log
+namespace mylog
 {
     class LoggerManager
     {
@@ -45,6 +45,12 @@ namespace log
                 return default_logger_;
             }
             return it->second;
+        }
+
+        //无参返回默认Logger
+        Logger::ptr GetLogger()
+        {
+            return default_logger_;
         }
 
     private:
