@@ -5,6 +5,11 @@ namespace mylog {
 Logger::ptr GetLogger(const std::string &name) {
     return LoggerManager::GetInstance().GetLogger(name);
 }
+
+Logger::ptr GetLogger() {
+    return LoggerManager::GetInstance().GetLogger();
+}
+
 // 用户获取默认日志器
 Logger::ptr DefaultLogger() { return LoggerManager::GetInstance().GetLogger(); }
 

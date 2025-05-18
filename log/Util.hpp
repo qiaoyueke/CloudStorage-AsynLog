@@ -15,17 +15,11 @@ namespace mylog
 {
     namespace Util
     {
-        class Date
-        {
-        public:
-            static time_t Now() { return time(nullptr); }
-        };
-
-        
+        //处理文件
         class File
         {
         public:
-            bool GetFileData(std::string *content, const std::string filename)
+            static bool GetFileData(std::string *content, const std::string filename)
             {
                 std::ifstream ifs;
                 ifs.open(filename.c_str(), std::ios::binary);
@@ -111,8 +105,7 @@ namespace mylog
             JsonData()
             {
                 std::string content;
-                mylog::Util::File file;
-                if (file.GetFileData(&content, "Config.conf") == false)
+                if (mylog::Util::File::GetFileData(&content, "../log/Config.conf") == false)
                 {
                     std::cout << __FILE__ << __LINE__ << "open config.conf failed" << std::endl;
                     perror(NULL);

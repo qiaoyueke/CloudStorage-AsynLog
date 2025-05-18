@@ -20,6 +20,7 @@ namespace mylog
         virtual void Flush(const char *begin, size_t len) = 0;
     };
 
+    //标准输出日志
     class CoutFlush : public LogFlush
     {
     public:
@@ -30,6 +31,7 @@ namespace mylog
         }
     };
 
+    //文件存放日志
     class FileFlush : public LogFlush
     {
     public:
@@ -72,6 +74,7 @@ namespace mylog
         FILE *fs_ = NULL;
     };
 
+    //防止日志文件过大，当到一定大小后打开新的日志文件写入
     class RollFileFlush : public LogFlush
     {
     public:
@@ -133,17 +136,14 @@ namespace mylog
         // 构建落地的滚动日志文件名称
         std::string CreateFilename()
         {
-            time_t time_ = Util::Date::Now();
+            time_t time_ = time(nullptr);
             struct tm t;
             localtime_r(&time_, &t);
             std::string filename = basename_;
-            filename += std::to_string(t.tm_year + 1900);
-            filename += std::to_string(t.tm_mon + 1);
-            filename += std::to_string(t.tm_mday);
-            filename += std::to_string(t.tm_hour + 1);
-            filename += std::to_string(t.tm_min + 1);
-            filename += std::to_string(t.tm_sec + 1) + '-' +
-                        std::to_string(cnt_++) + ".log";
+            char time[128];
+            strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", &t);
+            filename += std::string(time);
+            filename += '-' + std::to_string(cnt_++) + ".log";
             return filename;
         }
 

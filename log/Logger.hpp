@@ -16,13 +16,14 @@ namespace mylog
     {
     public:
         using ptr = std::shared_ptr<Logger>;
-        Logger(const std::string &name, std::vector<LogFlush::ptr> &flushs, AsyncType type)
+        Logger(const std::string &name, std::vector<LogFlush::ptr> &flushs, BufferType type)
             : logger_name_(name), flushs_(flushs.begin(), flushs.end()), type_(type),
               worker_(std::make_shared<AsynscWorker>(type_,
                                                      std::bind(&Logger::RealFlush, this, std::placeholders::_1)))
         {
-            std::cout << "Logger construct start" << std::endl;
         }
+
+        ~Logger(){}
 
         // 返回日志器的名字
         std::string LoggerName() { return logger_name_; }
@@ -44,7 +45,6 @@ namespace mylog
 
         void Info(const std::string &filename, size_t line, const std::string &format, ...)
         {
-            std::cout << "Info start" << std::endl;
             va_list va;
             va_start(va, format);
             char *ret;
@@ -105,8 +105,6 @@ namespace mylog
         // 根据日志等级，调用 AsynscWorker将日志内容写在生产者缓冲区
         void PushLog(const LogLevel::value level, const std::string &file, size_t line, char *ret)
         {
-            std::cout << "PushLog start" << std::endl;
-
             Message msg(level, file, line, logger_name_, ret);
 
             // ERRER和FATAL有向远端存储的部分
@@ -116,7 +114,6 @@ namespace mylog
             }
 
             std::string temp = msg.format();
-            std::cout <<temp<< std::endl;
             worker_->Push(temp.c_str(), temp.size());
         }
 
@@ -132,7 +129,7 @@ namespace mylog
         }
 
     private:
-        AsyncType type_;
+        BufferType type_;
         std::mutex mutex_;
         std::string logger_name_;
         std::vector<LogFlush::ptr> flushs_;
@@ -160,13 +157,12 @@ namespace mylog
 
         Logger::ptr Build()
         {
-            std::cout << "Build start" << std::endl;
             return std::make_shared<Logger>(logger_name_, flushs_, async_type);
         }
 
     private:
         std::string logger_name_;                     // 日志器名字
         std::vector<LogFlush::ptr> flushs_;           // 写日志的方式
-        AsyncType async_type = AsyncType::ASYNC_SAFE; //  控制缓冲区是否增长
+        BufferType async_type = BufferType::CHANGEABLE; //  控制缓冲区是否增长
     }; // end of LoggerBuilder
 } // end of log

@@ -6,7 +6,6 @@ mylog::Util::JsonData *g_conf_data;
 
 void test()
 {
-    std::cout << "test start" << std::endl;
     int cur_size = 0;
     int cnt = 1;
     while (cur_size++ < 2)
@@ -16,6 +15,11 @@ void test()
         mylog::GetLogger("asynclogger")->Debug("测试日志-%d", cnt++);
         mylog::GetLogger("asynclogger")->Error("测试日志-%d", cnt++);
         mylog::GetLogger("asynclogger")->Fatal("测试日志-%d", cnt++);
+        mylog::GetLogger()->Info("测试日志-%d", cnt++);
+        mylog::GetLogger()->Warn("测试日志-%d", cnt++);
+        mylog::GetLogger()->Debug("测试日志-%d", cnt++);
+        mylog::GetLogger()->Error("测试日志-%d", cnt++);
+        mylog::GetLogger()->Fatal("测试日志-%d", cnt++);
     }
 }
 
