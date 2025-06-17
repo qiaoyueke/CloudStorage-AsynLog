@@ -9,6 +9,7 @@
 #include "LogLevel.hpp"
 #include "Message.hpp"
 #include "Flush.hpp"
+#include "BackupLog.hpp"
 
 namespace mylog
 {
@@ -106,14 +107,15 @@ namespace mylog
         void PushLog(const LogLevel::value level, const std::string &file, size_t line, char *ret)
         {
             Message msg(level, file, line, logger_name_, ret);
+            std::string temp = msg.format();
 
             // ERRER和FATAL有向远端存储的部分
             if (level == LogLevel::value::ERROR || level == LogLevel::value::FATAL)
             {
                 // 远端存储
+                Backup(temp); 
             }
 
-            std::string temp = msg.format();
             worker_->Push(temp.c_str(), temp.size());
         }
 

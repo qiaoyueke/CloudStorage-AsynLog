@@ -1,5 +1,7 @@
 #pragma once
 #include "Manager.hpp"
+
+
 namespace mylog {
 // 用户获取日志器
 Logger::ptr GetLogger(const std::string &name) {

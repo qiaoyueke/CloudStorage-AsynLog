@@ -54,7 +54,7 @@ namespace mylog
             {
                 if (pathname.empty())
                     perror("文件所给路径为空：");
-                // 文件不存在再创建
+                // 文件夹不存在再创建
                 if (!Exists(pathname))
                 {
                     size_t pos, index = 0;
