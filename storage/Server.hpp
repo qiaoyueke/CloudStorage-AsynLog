@@ -212,9 +212,8 @@ namespace storage
                 FileUtil dir_create("uncompress");
                 dir_create.creat_dir();
                 download_file.uncompress(storage_path);
+                download_file = FileUtil(storage_path);
             }
-
-            FileUtil download_file(storage_path);
 
             if (finfo.path_.find(Config::GetInstance()->GetDeepStorageDir()) != std::string::npos && !download_file.Exists())
             {

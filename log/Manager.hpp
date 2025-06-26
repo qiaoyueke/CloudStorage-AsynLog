@@ -49,7 +49,7 @@ namespace mylog
         {
             std::unique_ptr<LoggerBuilder> build(new LoggerBuilder());
             build->SetLoggerName("default");
-            build->AddFlush<mylog::CoutFlush>();
+            build->AddFlush<mylog::FileFlush>("./default_file.log");
             default_logger_ = build->Build();
             map_.insert(std::make_pair("default", default_logger_));
         }

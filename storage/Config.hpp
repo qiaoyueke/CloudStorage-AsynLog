@@ -37,9 +37,12 @@ namespace storage
     public:
         bool read_config()
         {
-            std::string content = std::to_string(*congif_file);
-            storage::FileUtil f(content);
-            f.get_file(&content);
+            std::string content ;
+            storage::FileUtil f(congif_file);
+            if(!f.get_file(&content))
+            {
+                return false;
+            }
             nlohmann::json j = nlohmann::json::parse(content);
             server_port_ = j["server_port"];
             server_ip_ = j["server_ip"];
@@ -48,6 +51,7 @@ namespace storage
             low_storage_dir_ = j["low_storage_dir"];
             storage_info_ = j["storage_info"];
             bundle_format_ = j["bundle_format"];
+            return true;
         }
 
         int GetServerPort()

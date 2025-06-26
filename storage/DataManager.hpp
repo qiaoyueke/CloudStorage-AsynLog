@@ -32,6 +32,7 @@ namespace storage
             size_of_file_ = f.FileSize();
             path_ = path;
             url_ = Config::GetInstance()->GetDownloadPrefix() + f.FileName();
+            return true;
         }
     };
 
@@ -183,5 +184,8 @@ namespace storage
         static std::mutex mutex_;
         std::unordered_map<std::string, FileInfo> map_;
     };
+
+    DataManager* DataManager::instance_ = nullptr;
+    std::mutex DataManager::mutex_;
 
 }

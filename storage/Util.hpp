@@ -140,7 +140,7 @@ namespace storage
         }
 
         // content开始，长度为len的字符写入文件（覆盖原有内容）
-        bool write_file(const char const *content, const size_t len)
+        bool write_file(const char *content, const size_t len)
         {
             std::ofstream ofs;
             ofs.open(filename_.c_str(), std::ios::binary);
@@ -187,9 +187,25 @@ namespace storage
             return true;
         }
 
-        void uncompress(std::string path)
+        bool uncompress(std::string &path)
         {
-            //
+            // 将当前压缩包数据读取出来
+            std::string body;
+            if (this->get_file(&body) == false)
+            {
+                mylog::GetLogger()->Info("filename:%s, uncompress get file content failed!",filename_.c_str());
+                return false;
+            }
+            // 对压缩的数据进行解压缩
+            std::string unpacked = bundle::unpack(body);
+            // 将解压缩的数据写入到新文件
+            FileUtil fu(path);
+            if (fu.write_file(unpacked.c_str(), unpacked.size()) == false)
+            {
+                mylog::GetLogger()->Info("filename:%s, uncompress write packed data failed!",filename_.c_str());
+                return false;
+            }
+            return true;
         }
     };
 
