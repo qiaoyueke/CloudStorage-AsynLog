@@ -7,7 +7,7 @@
 
 namespace storage
 {
-    const char *congif_file = "storage.conf";
+    const char *congif_file = "./../storage/storage.conf";
 
     class Config
     {

@@ -142,7 +142,7 @@ namespace mylog
             std::string filename = basename_;
             char time[128];
             strftime(time, sizeof(time), "%Y-%m-%d %H:%M:%S", &t);
-            filename += std::string(time);
+            filename += '-' + std::string(time);
             filename += '-' + std::to_string(cnt_++) + ".log";
             return filename;
         }

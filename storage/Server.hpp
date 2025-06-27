@@ -69,6 +69,7 @@ namespace storage
         static void callback(struct evhttp_request *req, void *args)
         {
             std::string path = evhttp_uri_get_path(evhttp_request_get_evhttp_uri(req));
+            path = UrlDecode(path);
             mylog::GetLogger()->Info("get req, uri: %s", path.c_str());
 
             if (path.find("/download/") != std::string::npos)
@@ -157,7 +158,7 @@ namespace storage
             DataManager::GetInstance()->get_all_fileinfo(&arr);
 
             // 读取html模板
-            std::ifstream template_html("template.html");
+            std::ifstream template_html("./../storage/template.html");
             std::string html_str((std::istreambuf_iterator<char>(template_html)),
                                  std::istreambuf_iterator<char>());
 
@@ -173,7 +174,7 @@ namespace storage
 
             struct evbuffer *buf = evhttp_request_get_output_buffer(req);
             evbuffer_add(buf, (const void *)html_str.c_str(), html_str.size());
-            evhttp_add_header(evhttp_request_get_output_headers(req), "Content_Type", "text/html;charset=utf-8");
+            evhttp_add_header(evhttp_request_get_output_headers(req), "Content-Type", "text/html;charset=utf-8");
             evhttp_send_reply(req, HTTP_OK, NULL, NULL);
             mylog::GetLogger()->Info("ListShow() finish");
         }
@@ -323,15 +324,15 @@ namespace storage
 
             // 存储路径
             std::string storage_path;
-            if (storage_path == "low")
+            if (storage_type == "low")
             {
                 storage_path = Config::GetInstance()->GetLowStorageDir();
-                mylog::GetLogger()->Info("%s--LowStorage", file_name);
+                mylog::GetLogger()->Info("%s--LowStorage", file_name.c_str());
             }
-            else if (storage_path == "deep")
+            else if (storage_type == "deep")
             {
                 storage_path = Config::GetInstance()->GetDeepStorageDir();
-                mylog::GetLogger()->Info("%s--DeepStorage", file_name);
+                mylog::GetLogger()->Info("%s--DeepStorage", file_name.c_str());
             }
             else
             {
@@ -364,7 +365,7 @@ namespace storage
             }
 
             //文件写入完毕
-            mylog::GetLogger()->Info("%sstorage success", storage_type);
+            mylog::GetLogger()->Info("%s storage success", storage_type.c_str());
 
             //创建文件info
             FileInfo info;

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卡码异步日志存储系统</title>
+    <title>异步日志存储系统</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -134,7 +134,7 @@
 
 <body>
     <div class="container">
-        <h1>📁卡码异步日志存储系统</h1>
+        <h1>📁异步日志存储系统</h1>
 
         <div class="upload-section">
             <div class="form-group">
@@ -146,11 +146,11 @@
                 <label>存储类型</label>
                 <div class="storage-type">
                     <div>
-                        <input type="radio" name="storageType" id="deepStorage" value="deep" checked>
+                        <input type="radio" name="StorageType" id="deepStorage" value="deep" checked>
                         <label for="deepStorage">深度存储</label>
                     </div>
                     <div>
-                        <input type="radio" name="storageType" id="lowStorage" value="low">
+                        <input type="radio" name="StorageType" id="lowStorage" value="low">
                         <label for="lowStorage">普通存储</label>
                     </div>
                 </div>
@@ -171,9 +171,17 @@
             backendUrl: '{{BACKEND_URL}}'
         };
 
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
         async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
-            const storageType = document.querySelector('input[name="storageType"]:checked').value;
+            const fileName = document.getElementById('fileInput');
+            const storageType = document.querySelector('input[name="StorageType"]:checked').value;
             const file = fileInput.files[0];
 
             if (!file) {

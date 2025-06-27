@@ -28,8 +28,8 @@ namespace storage
         size_t length = str.length();
         for (size_t i = 0; i < length; i++)
         {
-            if (str[i] == '+')
-                strTemp += ' ';
+            // if (str[i] == '+')
+            //     strTemp += ' ';
             if (str[i] == '%')
             {
                 assert(i + 2 < length);
