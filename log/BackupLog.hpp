@@ -15,6 +15,7 @@ namespace mylog
     void Backup(const std::string &msg)
     {
         // 创建socket链接
+
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0)
         {
@@ -29,6 +30,8 @@ namespace mylog
         server.sin_port = htons(g_conf_data->backup_port_);
         inet_aton(g_conf_data->backup_addr_.c_str(), &server.sin_addr);
 
+        std::cout << "尝试链接 " << std::endl;
+
         int cnts = 5;
         while (-1 == connect(sock, (struct sockaddr *)&server, sizeof(server)))
         {
@@ -41,8 +44,11 @@ namespace mylog
                 return;
             }
         }
+        
+        std::cout << "链接成功 " << std::endl;
 
         char buffer[1024];
+        std::cout << "开始发送  " << std::string(buffer) << std::endl;
         if (-1 == write(sock, msg.c_str(), msg.size()))
         {
             std::cout << __FILE__ << __LINE__ << "send to server error : " << strerror(errno) << std::endl;

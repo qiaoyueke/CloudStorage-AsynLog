@@ -10,6 +10,9 @@
 #include "Message.hpp"
 #include "Flush.hpp"
 #include "BackupLog.hpp"
+#include "ThreadPool.hpp"
+
+extern mylog::ThreadPool* tp;
 
 namespace mylog
 {
@@ -113,7 +116,8 @@ namespace mylog
             if (level == LogLevel::value::ERROR || level == LogLevel::value::FATAL)
             {
                 // 远端存储
-                Backup(temp); 
+                std::cout<<"开始远端储存"<<std::endl;
+                tp->add_task(Backup,temp);
             }
 
             worker_->Push(temp.c_str(), temp.size());

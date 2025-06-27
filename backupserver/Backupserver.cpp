@@ -15,7 +15,7 @@
 using std::cout;
 using std::endl;
 
-const std::string basename = "./logfile";
+const std::string log_basename = "./logfile";
 int cnt = 0;
 const long max_size = 10000000;
 
@@ -26,7 +26,7 @@ void usage(std::string procgress)
 
 void backup_log(const std::string &message) // 用作回调
 {
-    std::string filename = basename + std::to_string(cnt);
+    std::string filename = log_basename + std::to_string(cnt);
     FILE *fp = fopen(filename.c_str(), "ab");
     if (fp == NULL)
     {
@@ -40,7 +40,7 @@ void backup_log(const std::string &message) // 用作回调
     {
         fclose(fp);
         cnt++;
-        filename = basename + std::to_string(cnt);
+        filename = log_basename + std::to_string(cnt);
         fp = fopen(filename.c_str(), "ab");
 
         if (fp == NULL)
